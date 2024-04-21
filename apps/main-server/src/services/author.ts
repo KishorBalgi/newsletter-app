@@ -1,22 +1,25 @@
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
+import Prisma from "./postgres_connect";
+import { hashData, generateToken } from "../utils/auth.util";
 import { Author } from "@repo/types/author";
 
-const prisma = new PrismaClient();
-
-// Create a new author
-export const createAuthor = async (data: {
-  name: string;
-  email: string;
-  password: string;
-}): Promise<Author> => {
-  try {
+class AuthorServices {
+  // Create a new author
+  static createAuthor = async (data: {
+    name: string;
+    email: string;
+    password: string;
+  }): Promise<{ author: Author; token: string }> => {
     // Hash the password:
-    const hashedPassword = await bcrypt.hash(data.password, 12);
+    const hashedPassword = await hashData(data.password);
     // Save the author to the database:
     data.password = hashedPassword;
-    return prisma.author.create({ data });
-  } catch (err: any) {
-    throw new Error(err);
-  }
-};
+
+    const author = await Prisma.author.create({ data });
+
+    // Generate Token:
+    const token = generateToken({ id: author.id });
+    return { author, token };
+  };
+}
+
+export default AuthorServices;

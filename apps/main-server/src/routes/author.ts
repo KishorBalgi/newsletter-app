@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { createAuthorController } from "../controllers/author";
+// import { createAuthorController } from "../controllers/author";
 
 const router = Router();
 
-router.post("/", createAuthorController);
+// router.post("/", createAuthorController);
 
 export default router;

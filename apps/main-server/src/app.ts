@@ -5,6 +5,7 @@ import cors from "cors";
 // Routes:
 import authRouter from "./routes/auth";
 import authorRouter from "./routes/author";
+import newsletterRouter from "./routes/newsletter";
 
 // Global Error Handler:
 import globalErrorHandler from "./controllers/error";
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 // Routes:
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/author", authorRouter);
+app.use("/api/v1/newsletter", newsletterRouter);
 
 // Global Error Handler:
 app.use(globalErrorHandler);

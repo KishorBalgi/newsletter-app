@@ -4,7 +4,11 @@
   "description": "Types for the entire app",
   "main": "index.js",
   "exports": {
-    "./author": "./Author.ts"
+    "./author": "./Author.ts",
+    "./express": "./Express.ts",
+    "./newsletter": "./Newsletter.ts",
+    "./subscriber": "./Subscriber.ts",
+    "./article": "./Article.ts"
   },
   "author": "Kishor Balgi",
   "license": "ISC",

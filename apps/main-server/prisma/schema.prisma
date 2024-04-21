@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Author Model
+model Author {
+  id         Int          @id @default(autoincrement())
+  name       String
+  email      String       @unique
+  password   String
+  newsLetters NewsLetter[]
+  articles   Article[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+// NewsLetter Model
+model NewsLetter {
+  id        Int      @id @default(autoincrement())
+  name      String
+  authorId  Int
+  articles Article[]
+  subscribers Subscriber[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author    Author   @relation(fields: [authorId], references: [id])
+}
+
+// Article Model
+model Article {
+  id Int @id @default(autoincrement())
+  title String
+  body String
+  authorId Int
+  newsLetterId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author Author @relation(fields: [authorId], references: [id])
+  newsLetter NewsLetter @relation(fields: [newsLetterId], references: [id])
+}
+
+// Subscriber Model
+model Subscriber{
+  newsLetterId Int
+  email String
+  newsLetter NewsLetter @relation(fields: [newsLetterId], references: [id])
+  @@id([newsLetterId,email])
+}
+
+

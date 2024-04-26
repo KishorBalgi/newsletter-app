@@ -1,0 +1,37 @@
+{
+  "name": "newsletter-email-server",
+  "version": "1.0.0",
+  "description": "Email server for the newsletter to handle the email delivery",
+  "main": "app.js",
+  "private": true,
+  "scripts": {
+    "start": "npm run build && set NODE_ENV=production && node build/src/app.js",
+    "dev": "npx nodemon",
+    "build": "rimraf ./build && npx tsc"
+  },
+  "author": "Kishor Balgi",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.12.1",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^5.12.1"
+  },
+  "devDependencies": {
+    "@repo/types": "*",
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.12.7",
+    "nodemon": "^3.1.0",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}

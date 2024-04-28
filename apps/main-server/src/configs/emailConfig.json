@@ -1,0 +1,10 @@
+{
+  "types": {
+    "ARTICLE": {
+      "name": "ARTICLE"
+    },
+    "WELCOME": {
+      "name": "WELCOME"
+    }
+  }
+}

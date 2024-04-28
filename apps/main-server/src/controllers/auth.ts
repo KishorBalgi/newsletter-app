@@ -3,6 +3,9 @@ import AppError from "../utils/AppError";
 import { catchAsync, setCookie } from "../utils/api.util";
 import { sendResponse } from "../utils/api.util";
 import AuthService from "../services/auth";
+import RabbitMQServices from "../services/rabbitMQ";
+import emailConfig from "../configs/emailConfig.json";
+import rabbitMQConfig from "../configs/rabbitMQConfig.json";
 
 // Signup Author:
 export const signupController = catchAsync(
@@ -12,6 +15,19 @@ export const signupController = catchAsync(
     }
 
     const { author, token } = await AuthService.signup(req.body);
+
+    // Send welcome email:
+    await RabbitMQServices.sendMQMessage(
+      req.app.get("articleChannel"),
+      rabbitMQConfig.EMAIL_MQ_NAME,
+      {
+        type: emailConfig.types.WELCOME.name,
+        data: {
+          email: author.email,
+          name: author.name,
+        },
+      }
+    );
 
     // Remove password from the response:
     author.password = undefined as any;

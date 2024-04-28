@@ -1,6 +1,11 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import dotenv from "dotenv";
+
+import RabbitMQServices from "./services/rabbitMQ";
+
+dotenv.config();
 
 // Routes:
 import authRouter from "./routes/auth";
@@ -16,6 +21,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
+
+// Create a RabbitMQ connection and create a channel:
+(async () => {
+  const rabbitMQConn = await RabbitMQServices.getMQConnection();
+  const articleChannel = await RabbitMQServices.createMQChannel(rabbitMQConn);
+  app.set("articleChannel", articleChannel);
+})();
 
 app.get("/", (req, res) => {
   res.send("Newsletter API server");

@@ -31,6 +31,10 @@ const emailWorker = async (
               `${process.env.FRONTEND_URL}/article/${email.data.articleId}`
             );
             break;
+          case emailConfig.types.WELCOME.name:
+            subject = subject.replace("{{name}}", email.data.name);
+            body = body.replace("{{name}}", email.data.name);
+            break;
           default:
             break;
         }

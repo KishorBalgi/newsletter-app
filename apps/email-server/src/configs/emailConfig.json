@@ -7,8 +7,8 @@
     },
     "WELCOME": {
       "name": "WELCOME",
-      "subject": "Welcome to our platform",
-      "body": "Hello, \n\nwelcome to our platform. We are happy to have you here."
+      "subject": "Welcome {{name}} to our platform",
+      "body": "Hello {{name}}, \n\nwelcome to our platform. We are happy to have you here."
     }
   }
 }

@@ -26,6 +26,26 @@ class NewsLetterServices {
     return newsletter;
   };
 
+  // Get all newsletters
+  static getNewsletters = async (): Promise<Newsletter[]> => {
+    const newsletters = await Prisma.newsLetter.findMany();
+
+    return newsletters;
+  };
+
+  // Get a newsletter by ID
+  static getNewsletter = async (id: number): Promise<Newsletter> => {
+    const newsletter = await Prisma.newsLetter.findUnique({
+      where: { id },
+    });
+
+    if (!newsletter) {
+      throw new AppError(404, "Newsletter does not exist");
+    }
+
+    return newsletter;
+  };
+
   //   Subscribe to a newsletter
   static subscribeNewsletter = async (data: {
     email: string;
@@ -116,6 +136,32 @@ class NewsLetterServices {
     const article = await Prisma.article.create({
       data,
     });
+
+    if (!article) {
+      throw new AppError(400, "Failed to create article");
+    }
+
+    return article;
+  };
+
+  // Get all articles under a newsletter:
+  static getArticles = async (newsLetterId: number): Promise<Article[]> => {
+    const articles = await Prisma.article.findMany({
+      where: { newsLetterId },
+    });
+
+    return articles;
+  };
+
+  // Get an article by ID:
+  static getArticle = async (id: number): Promise<Article> => {
+    const article = await Prisma.article.findUnique({
+      where: { id },
+    });
+
+    if (!article) {
+      throw new AppError(404, "Article does not exist");
+    }
 
     return article;
   };

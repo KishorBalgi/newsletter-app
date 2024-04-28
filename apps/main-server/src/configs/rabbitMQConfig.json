@@ -1,0 +1,4 @@
+{
+  "ARTICLE_MQ_NAME": "article_mq",
+  "EMAIL_MQ_NAME": "email_mq"
+}

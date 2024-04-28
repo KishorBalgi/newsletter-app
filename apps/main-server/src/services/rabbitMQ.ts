@@ -22,8 +22,6 @@ class RabbitMQServices {
     try {
       const channel = await conn.createChannel();
 
-      console.log("Created a new MQ channel");
-
       return channel;
     } catch (err) {
       throw new AppError(500, "Unable to create a channel");

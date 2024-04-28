@@ -14,6 +14,7 @@ import newsletterRouter from "./routes/newsletter";
 
 // Global Error Handler:
 import globalErrorHandler from "./controllers/error";
+import RedisService from "./services/redis";
 
 const app = express();
 
@@ -24,6 +25,11 @@ app.use(cors());
 
 // Create a RabbitMQ connection and create a channel:
 (async () => {
+  // Create a Redis connection:
+  const redisClient = await RedisService.getRedisConnection();
+  app.set("redisClient", redisClient);
+
+  // Create a RabbitMQ connection and create a channel:
   const rabbitMQConn = await RabbitMQServices.getMQConnection();
   const articleChannel = await RabbitMQServices.createMQChannel(rabbitMQConn);
   app.set("articleChannel", articleChannel);

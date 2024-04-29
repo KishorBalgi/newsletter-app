@@ -28,7 +28,7 @@ const emailWorker = async (
             body = body.replace("{{author}}", email.data.author);
             body = body.replace(
               "{{url}}",
-              `${process.env.FRONTEND_URL}/article/${email.data.articleId}`
+              `${process.env.FRONTEND_URL}/newsletter/${email.data.newsletterId}/article/${email.data.articleId}`
             );
             break;
           case emailConfig.types.WELCOME.name:

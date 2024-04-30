@@ -4,17 +4,17 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import RabbitMQServices from "./services/rabbitMQ";
+import rabbitMQConfig from "./configs/rabbitMQConfig.json";
+
+import articleWorker from "./workers/articleWorker";
 
 dotenv.config();
 
 // Routes:
-import authRouter from "./routes/auth";
-import authorRouter from "./routes/author";
-import newsletterRouter from "./routes/newsletter";
 
 // Global Error Handler:
 import globalErrorHandler from "./controllers/error";
-import RedisService from "./services/redis";
+import emailWorker from "./workers/emailWorker";
 
 const app = express();
 
@@ -25,24 +25,24 @@ app.use(cors());
 
 // Create a RabbitMQ connection and create a channel:
 (async () => {
-  // Create a Redis connection:
-  const redisClient = await RedisService.getRedisConnection();
-  app.set("redisClient", redisClient);
-
-  // Create a RabbitMQ connection and create a channel:
   const rabbitMQConn = await RabbitMQServices.getMQConnection();
   const articleChannel = await RabbitMQServices.createMQChannel(rabbitMQConn);
+  const emailChannel = await RabbitMQServices.createMQChannel(rabbitMQConn);
   app.set("articleChannel", articleChannel);
+  app.set("emailChannel", emailChannel);
+
+  // Article Worker:
+  articleWorker(app.get("articleChannel"), rabbitMQConfig.ARTICLE_MQ_NAME, 1);
+
+  // Email Worker:
+  emailWorker(app.get("emailChannel"), rabbitMQConfig.EMAIL_MQ_NAME, 4);
 })();
 
 app.get("/", (req, res) => {
-  res.send("Newsletter API server");
+  res.send("Newsletter Email server");
 });
 
 // Routes:
-app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/author", authorRouter);
-app.use("/api/v1/newsletter", newsletterRouter);
 
 // Global Error Handler:
 app.use(globalErrorHandler);
@@ -54,7 +54,7 @@ process.on("uncaughtException", (err: any) => {
   process.exit(1);
 });
 
-const server = app.listen(process.env.PORT || 5000, () => {
+const server = app.listen(process.env.PORT || 5001, () => {
   console.log("Server is running on port 3000");
 });
 

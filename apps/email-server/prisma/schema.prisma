@@ -34,7 +34,7 @@ model NewsLetter {
   subscribers Subscriber[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  author    Author   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  author    Author   @relation(fields: [authorId], references: [id])
 }
 
 // Article Model
@@ -46,15 +46,15 @@ model Article {
   newsLetterId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  author Author @relation(fields: [authorId], references: [id],onDelete: Cascade)
-  newsLetter NewsLetter @relation(fields: [newsLetterId], references: [id],onDelete: Cascade)
+  author Author @relation(fields: [authorId], references: [id])
+  newsLetter NewsLetter @relation(fields: [newsLetterId], references: [id])
 }
 
 // Subscriber Model
 model Subscriber{
   newsLetterId Int
   email String
-  newsLetter NewsLetter @relation(fields: [newsLetterId], references: [id],onDelete: Cascade)
+  newsLetter NewsLetter @relation(fields: [newsLetterId], references: [id])
   @@id([newsLetterId,email])
 }
 

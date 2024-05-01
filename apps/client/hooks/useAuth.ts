@@ -9,9 +9,10 @@ export const useAuth = () => {
         email,
         password,
       });
+
       return response.data.data;
     } catch (error) {
-      throw new Error(error.response.data.message || "Failed to login");
+      throw new Error(error?.response?.data?.message || "Failed to login");
     }
   };
 
@@ -22,19 +23,30 @@ export const useAuth = () => {
         email,
         password,
       });
+
       return response.data.data;
     } catch (error) {
       throw new Error(error.response.data.message || "Failed to register");
     }
   };
 
-  const logout = async () => {
+  // Is Logged in:
+  const isLoggedIn = async () => {
     try {
-      await axios.post("/auth/logout");
+      const response = await axios.get("/auth/is-logged-in");
+      return response.data;
     } catch (error) {
-      throw new Error(error.response.data.message || "Failed to logout");
+      throw new Error(error?.response?.data?.message || "Failed to register");
     }
   };
 
-  return { login, register, logout };
+  const logout = async () => {
+    try {
+      await axios.get("/auth/logout");
+    } catch (error) {
+      throw new Error(error?.response?.data?.message || "Failed to logout");
+    }
+  };
+
+  return { login, register, isLoggedIn, logout };
 };

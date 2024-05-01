@@ -3,22 +3,27 @@ import { RequestWithAuthor } from "@repo/types/express";
 import AppError from "../utils/AppError";
 import { catchAsync } from "../utils/api.util";
 import AuthorServices from "../services/author";
-import { verify } from "jsonwebtoken";
+import { verifyToken } from "../utils/auth.util";
 
 export const isLoggedIn = catchAsync(
   async (req: RequestWithAuthor, res: Response, next: NextFunction) => {
-    // Get the token from the header:
-    const token = req.headers.authorization?.split(" ")[1];
+    // Get the token from cookies:
+    let token = req.cookies.jwt;
+
+    if (!token) {
+      // Get the token from the header:
+      token = req.headers.authorization?.split(" ")[1];
+    }
 
     if (!token) {
       return next(new AppError(401, "You are not logged in"));
     }
 
     // Verify the token:
-    const decoded: any = verify(token, process.env.JWT_SECRET!);
+    const decoded: any = verifyToken(token);
 
     if (!decoded) {
-      return next(new AppError(401, "Invalid token"));
+      return next(new AppError(401, "Logged out, please login again"));
     }
 
     // Check if the author exists:

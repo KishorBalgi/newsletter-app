@@ -6,6 +6,7 @@ import { catchAsync } from "../utils/api.util";
 import NewsLetterServices from "../services/newsletter";
 import { sendResponse } from "../utils/api.util";
 import rabbitMQConfig from "../configs/rabbitMQConfig.json";
+import validator from "validator";
 
 // Create a newsletter:
 export const createNewsletter = catchAsync(
@@ -93,6 +94,11 @@ export const subscribeNewsletter = catchAsync(
       return next(new AppError(400, "Email is required"));
     }
 
+    // Validate email:
+    if (!validator.isEmail(req.body.email)) {
+      return next(new AppError(400, "Invalid email address"));
+    }
+
     // Subscribe to the newsletter:
     const subscriber = await NewsLetterServices.subscribeNewsletter({
       email,
@@ -115,6 +121,11 @@ export const unsubscribeNewsletter = catchAsync(
 
     if (!email) {
       return next(new AppError(400, "Email is required"));
+    }
+
+    // Validate email:
+    if (!validator.isEmail(req.body.email)) {
+      return next(new AppError(400, "Invalid email address"));
     }
 
     // Unsubscribe from the newsletter:
@@ -140,6 +151,8 @@ export const createArticle = catchAsync(
     if (!title || !body) {
       return next(new AppError(400, "Title and content are required"));
     }
+
+    // Check if the newsletter exists:
 
     // Add the article to the newsletter:
     const article = await NewsLetterServices.createArticle({
@@ -169,7 +182,7 @@ export const createArticle = catchAsync(
 
     redisClient.del(cacheKey);
 
-    sendResponse(res, 201, {});
+    sendResponse(res, 201, article);
   }
 );
 

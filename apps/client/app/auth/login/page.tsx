@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useAuth } from "hooks/useAuth";
+import { useAuthContext } from "context/authContext";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -20,6 +21,7 @@ import Link from "next/link";
 export default function Page() {
   const router = useRouter();
   const { login } = useAuth();
+  const authContext = useAuthContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -46,10 +48,11 @@ export default function Page() {
         throw new Error("Password must be at least 8 characters long");
       }
 
-      await login(email, password);
+      const res = await login(email, password);
       toast.success("You have successfully logged in!");
       // Redirect to home page
       router.push("/");
+      authContext.login(res.token);
     } catch (error) {
       toast.error(error.message);
     }

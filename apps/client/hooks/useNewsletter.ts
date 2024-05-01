@@ -5,6 +5,20 @@ import { Article } from "@repo/types/article";
 export const useNewsletter = () => {
   const axios = useAxios();
 
+  // Create a newsletter:
+  const createNewsletter = async (name: string): Promise<Newsletter> => {
+    try {
+      const response = await axios.post("/newsletter", {
+        name,
+      });
+      return response.data.data;
+    } catch (error) {
+      throw new Error(
+        error.response.data.message || "Failed to create newsletter"
+      );
+    }
+  };
+
   //   Get all newsletters
   const getAllNewsletters = async (): Promise<Newsletter[]> => {
     try {
@@ -13,6 +27,25 @@ export const useNewsletter = () => {
     } catch (error) {
       throw new Error(
         error.response.data.message || "Failed to get newsletters"
+      );
+    }
+  };
+
+  // Create a arrticle for a newsletter:
+  const createArticle = async (
+    newsletterId: number,
+    title: string,
+    content: string
+  ): Promise<Article> => {
+    try {
+      const response = await axios.post(`/newsletter/${newsletterId}/article`, {
+        title,
+        body: content,
+      });
+      return response.data.data;
+    } catch (error) {
+      throw new Error(
+        error.response.data.message || "Failed to create article for newsletter"
       );
     }
   };
@@ -71,6 +104,8 @@ export const useNewsletter = () => {
   };
 
   return {
+    createNewsletter,
+    createArticle,
     getAllNewsletters,
     getArticlesForNewsletter,
     getArticleById,

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useAuth } from "hooks/useAuth";
 import { useRouter } from "next/navigation";
+import { useAuthContext } from "context/authContext";
 import toast from "react-hot-toast";
 
 import {
@@ -20,6 +21,7 @@ import Link from "next/link";
 export default function Component() {
   const router = useRouter();
   const { register } = useAuth();
+  const authContext = useAuthContext();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -51,10 +53,11 @@ export default function Component() {
         throw new Error("Password must be at least 8 characters long");
       }
 
-      await register(name, email, password);
+      const res = await register(name, email, password);
       toast.success("You have successfully signed up!");
       // Redirect to home page
       router.push("/");
+      authContext.login(res.token);
     } catch (error) {
       toast.error(error.message);
     }

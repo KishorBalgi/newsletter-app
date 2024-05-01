@@ -16,6 +16,7 @@ const emailWorker = async (
         if (!message) return;
         const email = JSON.parse(message.content.toString());
 
+        console.log("Email Worker: ", email);
         console.log(`Worker ${worker}: ${email.type} ${email.data.email}`);
 
         // Get subject and body from emailConfig:

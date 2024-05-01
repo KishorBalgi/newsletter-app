@@ -657,6 +657,11 @@
     "@types/node" "*"
     "@types/send" "*"
 
+"@types/validator@^13.11.9":
+  version "13.11.9"
+  resolved "https://registry.npmjs.org/@types/validator/-/validator-13.11.9.tgz"
+  integrity sha512-FCTsikRozryfayPuiI46QzH3fnrOoctTjvOYZkho9BTFLCOZ2rgZJHMOVgCOfttjPJcgOx52EpkY0CMfy87MIw==
+
 "@typescript-eslint/eslint-plugin@^5.0.0 || ^6.0.0 || ^7.0.0", "@typescript-eslint/eslint-plugin@^6.5.0":
   version "6.21.0"
   resolved "https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-6.21.0.tgz"
@@ -3196,6 +3201,7 @@ neo-async@^2.6.2:
     ioredis "^5.4.1"
     jsonwebtoken "^9.0.2"
     prisma "^5.12.1"
+    validator "^13.11.0"
 
 next@^14.2.3:
   version "14.2.3"
@@ -4540,6 +4546,11 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
+
+validator@^13.11.0:
+  version "13.11.0"
+  resolved "https://registry.npmjs.org/validator/-/validator-13.11.0.tgz"
+  integrity sha512-Ii+sehpSfZy+At5nPdnyMhx78fEoPDkR2XW/zimHEL3MyGJQOCQ7WeP20jPYRz7ZCpcKLB21NxuXHF3bxjStBQ==
 
 vary@^1, vary@~1.1.2:
   version "1.1.2"

@@ -133,6 +133,23 @@ class NewsLetterServices {
       throw new AppError(404, "Newsletter does not exist");
     }
 
+    // Check if the author exists:
+    const author = await Prisma.author.findUnique({
+      where: { id: data.authorId },
+    });
+
+    if (!author) {
+      throw new AppError(404, "Author does not exist");
+    }
+
+    // Check if the author is the owner of the newsletter:
+    if (author.id !== newsletter.authorId) {
+      throw new AppError(
+        403,
+        "You are not authorized to create an article for this newsletter"
+      );
+    }
+
     const article = await Prisma.article.create({
       data,
     });

@@ -35,7 +35,7 @@ app.use(cors());
   articleWorker(app.get("articleChannel"), rabbitMQConfig.ARTICLE_MQ_NAME, 1);
 
   // Email Worker:
-  emailWorker(app.get("emailChannel"), rabbitMQConfig.EMAIL_MQ_NAME, 4);
+  emailWorker(app.get("emailChannel"), rabbitMQConfig.EMAIL_MQ_NAME, 1);
 })();
 
 app.get("/", (req, res) => {
@@ -54,8 +54,8 @@ process.on("uncaughtException", (err: any) => {
   process.exit(1);
 });
 
-const server = app.listen(process.env.PORT || 5001, () => {
-  console.log("Server is running on port 3000");
+const server = app.listen(5001, () => {
+  console.log("Server is running on port 5001");
 });
 
 // Unhandled Rejection:

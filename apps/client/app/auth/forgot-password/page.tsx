@@ -27,7 +27,7 @@ export default function Component() {
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
-                placeholder="m@example.com"
+                placeholder="johndoe@gmail.com"
                 required
                 type="email"
               />

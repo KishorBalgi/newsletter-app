@@ -146,6 +146,15 @@ class NewsLetterServices {
 
   // Get all articles under a newsletter:
   static getArticles = async (newsLetterId: number): Promise<Article[]> => {
+    // Check if the newsletter exists:
+    const newsletter = await Prisma.newsLetter.findUnique({
+      where: { id: newsLetterId },
+    });
+
+    if (!newsletter) {
+      throw new AppError(404, "Newsletter does not exist");
+    }
+
     const articles = await Prisma.article.findMany({
       where: { newsLetterId },
     });

@@ -1,4 +1,9 @@
 {
   "ARTICLE_MQ_NAME": "article_mq",
-  "EMAIL_MQ_NAME": "email_mq"
+  "EMAIL_MQ_NAME": "email_mq",
+  "SERVER_OPTIONS": {
+    "reInitConnDelay": 300000,
+    "connRetries": 10,
+    "connRetriesDelay": 5000
+  }
 }

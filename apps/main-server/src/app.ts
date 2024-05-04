@@ -4,6 +4,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import RabbitMQServices from "./services/rabbitMQ";
+import rabbitMQConfig from "./configs/rabbitMQConfig.json";
+import { sleep } from "./utils/general.util";
 
 dotenv.config();
 
@@ -15,6 +17,7 @@ import newsletterRouter from "./routes/newsletter";
 // Global Error Handler:
 import globalErrorHandler from "./controllers/error";
 import RedisService from "./services/redis";
+import AppError from "./utils/AppError";
 
 const app = express();
 
@@ -28,16 +31,29 @@ app.use(
   })
 );
 
-// Create a RabbitMQ connection and create a channel:
+// Redis Connection:
 (async () => {
   // Create a Redis connection:
   const redisClient = await RedisService.getRedisConnection();
   app.set("redisClient", redisClient);
+})();
 
+// Rabbit MQ Connection:
+(async () => {
   // Create a RabbitMQ connection and create a channel:
-  const rabbitMQConn = await RabbitMQServices.getMQConnection();
-  const articleChannel = await RabbitMQServices.createMQChannel(rabbitMQConn);
-  app.set("articleChannel", articleChannel);
+  while (true) {
+    try {
+      const rabbitMQConn = await RabbitMQServices.getMQConnection();
+      const articleChannel =
+        await RabbitMQServices.createMQChannel(rabbitMQConn);
+      app.set("articleChannel", articleChannel);
+      break;
+    } catch (err: any) {
+      console.log(err.message);
+      await sleep(rabbitMQConfig.SERVER_OPTIONS.reInitConnDelay);
+      console.log("Retrying to connect to RabbitMQ...");
+    }
+  }
 })();
 
 app.get("/", (req, res) => {

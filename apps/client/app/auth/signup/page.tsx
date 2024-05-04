@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useAuth } from "hooks/useAuth";
 import { useRouter } from "next/navigation";
-import { useAuthContext } from "context/authContext";
+import { useAuthContext } from "contexts/authContext";
 import toast from "react-hot-toast";
 
 import {

@@ -1,0 +1,124 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres
+    container_name: newsletter-postgres-server
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=/run/secrets/db_password
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=newsletter
+    networks:
+      - db-server-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: newsletter-rabbitmq-server
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=/run/secrets/mq_password
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - email-server-network
+      - main-server-network
+
+  email-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - WORKSPACE=newsletter-email-server
+        - APP=email-server
+    container_name: newsletter-email-server
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - 5001:5001
+    env_file:
+      - apps/email-server/.env.prod
+    networks:
+      - email-server-network
+      - db-server-network
+
+  redis:
+    image: redis/redis-stack:latest
+    container_name: newsletter-redis-server
+    ports:
+      - 6379:6379
+      - 8001:8001
+    environment:
+      - REDIS_PASSWORD=/run/secrets/redis_password
+    volumes:
+      - redis_data:/data
+    networks:
+      - main-server-network
+
+  main-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - WORKSPACE=newsletter-main-server
+        - APP=main-server
+    container_name: newsletter-main-server
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - 5000:5000
+    env_file:
+      - apps/main-server/.env.prod
+    networks:
+      - main-server-network
+      - email-server-network
+      - db-server-network
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - WORKSPACE=newsletter-client
+        - APP=client
+    container_name: newsletter-client
+    depends_on:
+      - main-server
+    ports:
+      - 3000:3000
+    env_file:
+      - apps/client/.env.prod
+    volumes:
+      - frontend_data:/app
+    networks:
+      - main-server-network
+
+networks:
+  main-server-network:
+    driver: bridge
+  email-server-network:
+    driver: bridge
+  db-server-network:
+    driver: bridge
+
+volumes:
+  frontend_data:
+  postgres_data:
+  rabbitmq_data:
+  redis_data:
+
+secrets:
+  db_password:
+    file: ./secrets/db_password
+  mq_password:
+    file: ./secrets/mq_password
+  redis_password:
+    file: ./secrets/redis_password

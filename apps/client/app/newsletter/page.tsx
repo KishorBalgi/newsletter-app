@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useNewsletter } from "hooks/useNewsletter";
-import { useAuthContext } from "context/authContext";
+import { useAuthContext } from "contexts/authContext";
 import { LoadingSpinner } from "@/components/ui/loadingSpinner";
 
 export default function Page() {

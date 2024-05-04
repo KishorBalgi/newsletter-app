@@ -5,14 +5,13 @@
   "main": "app.js",
   "private": true,
   "scripts": {
-    "start": "npm run build && set NODE_ENV=production && node build/src/app.js",
+    "start": "prisma migrate deploy && node build/src/app.js",
     "dev": "npx nodemon",
-    "build": "rimraf ./build && npx tsc"
+    "build": "rimraf ./build && npm install -g prisma && npx prisma generate && npx tsc"
   },
   "author": "Kishor Balgi",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.12.1",
     "amqplib": "^0.10.4",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
@@ -25,6 +24,7 @@
     "validator": "^13.11.0"
   },
   "devDependencies": {
+    "@prisma/client": "^5.13.0",
     "@repo/types": "*",
     "@types/amqplib": "^0.10.5",
     "@types/bcrypt": "^5.0.2",

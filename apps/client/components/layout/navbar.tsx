@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/ui/loadingSpinner";
 import { useAuth } from "hooks/useAuth";
-import { useAuthContext } from "context/authContext";
+import { useAuthContext } from "contexts/authContext";
 
 export default function Navbar() {
   const { user, isValidating, logout: logoutUser } = useAuthContext();

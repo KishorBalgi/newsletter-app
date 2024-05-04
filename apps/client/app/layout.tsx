@@ -2,7 +2,7 @@ import Navbar from "@/components/layout/navbar";
 import "./globals.css";
 import { Inter as FontSans } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-import { AuthProvider } from "context/authContext";
+import { AuthProvider } from "contexts/authContext";
 
 import { cn } from "@/lib/utils";
 

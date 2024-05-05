@@ -22,7 +22,8 @@
     "handlebars": "^4.7.8",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.13",
-    "prisma": "^5.12.1"
+    "prisma": "^5.12.1",
+    "prom-client": "^15.1.2"
   },
   "devDependencies": {
     "@repo/types": "*",

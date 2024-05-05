@@ -2,6 +2,8 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
+import promClient from "prom-client";
+import PrometheusServices from "./services/prometheus";
 
 import RabbitMQServices from "./services/rabbitMQ";
 import rabbitMQConfig from "./configs/rabbitMQConfig.json";
@@ -13,6 +15,9 @@ dotenv.config();
 import authRouter from "./routes/auth";
 import authorRouter from "./routes/author";
 import newsletterRouter from "./routes/newsletter";
+
+// Middlewares:
+import { httpReqInterceptor } from "./middlewares/monitoring";
 
 // Global Error Handler:
 import globalErrorHandler from "./controllers/error";
@@ -55,6 +60,25 @@ app.use(
     }
   }
 })();
+
+// Prometheus Setup:
+const register = new promClient.Registry();
+promClient.collectDefaultMetrics({
+  register: register,
+  prefix: "main_",
+});
+register.registerMetric(PrometheusServices.http_request_total);
+register.registerMetric(PrometheusServices.http_response_rate_histogram);
+register.registerMetric(PrometheusServices.nodejs_memory_usage);
+register.registerMetric(PrometheusServices.nodejs_cpu_usage);
+
+app.use(httpReqInterceptor);
+
+app.get("/metrics", async (req, res, next) => {
+  res.setHeader("Content-type", register.contentType);
+  res.send(await register.metrics());
+  next();
+});
 
 app.get("/", (req, res) => {
   res.send("Newsletter API server");

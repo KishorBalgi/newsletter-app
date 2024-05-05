@@ -2,10 +2,10 @@
 <div align="center">
     <img src="https://github.com/KishorBalgi/Peer-to-Peer-Video-Communication/assets/75678927/4867b00c-4dc6-4a52-ae05-6d994a875528" alt="Logo" width="200" height="200">
 
-  <h3 align="center">Newsletter Client Application</h3>
+  <h3 align="center">Newsletter Email Server</h3>
 
   <p align="center">
-    The client application for the newsletter app built using Next.js, Tailwind CSS, and Shadcn/ui
+    The email server is responsible for sending out email notifications to subscribers whenever new articles are published. It consumes messages from the RabbitMQ queue, retrieves the relevant article and subscriber information, and sends out personalized email notifications using Nodemailer and the Gmail SMTP service.
     <br />
     <a href="">View Demo</a>
     ·
@@ -26,7 +26,6 @@
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
-    <li><a href="#installation">Installation</a></li>
     <li><a href="#demonstration">Demonstration</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -158,212 +157,6 @@ The project's architecture emphasizes scalability, maintainability, and performa
 
 <!-- [![Prometheus][Prometheus]][Prometheus-url]
 [![Grafana][Grafana]][Grafana-url] -->
-
-<!-- GETTING STARTED -->
-
-## Installation
-
-1. Fork the [repo](https://github.com/KishorBalgi/newsletter-platform)
-
-   Clone the repo to your local system
-
-   ```git
-   git clone https://github.com/KishorBalgi/newsletter-platform newsletter-platform
-   ```
-
-2. Install all the dependencies
-
-   ```bash
-   cd newsletter-platform
-   npm install # This will install all the required dependencies for all the workspaces
-   ```
-
-3. Environment Configurations:
-
-- Frontend:
-
-  - `.env` file for development
-
-  ```bash
-    NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
-  ```
-
-  - `.env.prod` file for production
-
-  ```bash
-    NEXT_PUBLIC_API_URL=https://<API_HOST>/api/v1
-  ```
-
-- Main Server:
-
-  - `.env` file for development
-
-  ```bash
-    NODE_ENV="development"
-    PORT=5000
-
-    # DB
-    DATABASE_URL=""postgresql://postgres:mysecretpassword@localhost:5432/newsletter?schema=public"
-
-    # RabbitMQ
-    RABBITMQ_URL="amqp://guest:guest@localhost"
-
-    # Redis
-    REDIS_HOST="localhost"
-    REDIS_PORT=6379
-    REDIS_PASSWORD=""
-
-    # Frontend
-    CLIENT_URL="http://localhost:3000"
-
-    # Server
-    JWT_SECRET="mysecretkey"
-    JWT_EXPIRES_IN=10d
-    JWT_COOKIE_EXPIRES_IN=10
-  ```
-
-  - `.env.prod` file for production
-
-  ```bash
-    NODE_ENV="production"
-    PORT=5000
-
-    # DB
-    DATABASE_URL="postgresql://postgres:<DB_PASS>@<DB_HOST>:5432/newsletter?schema=public"
-
-    # RabbitMQ
-    RABBITMQ_URL="amqp://<RABBITMQ_HOST>:5672"
-
-    # Redis
-    REDIS_HOST="<REDIS_HOST>"
-    REDIS_PORT=6379
-    REDIS_PASSWORD="<REDIS_PASS>"
-
-    # Frontend
-    CLIENT_URL="https://<CLIENT_HOST>"
-
-    # Server
-    JWT_SECRET="<JWT_SECRET>"
-    JWT_EXPIRES_IN=10d
-    JWT_COOKIE_EXPIRES_IN=10
-  ```
-
-- Email Server:
-
-  - `.env` file for development
-
-  ```bash
-    NODE_ENV="production"
-    PORT=5000
-
-    # DB
-    DATABASE_URL="postgresql://postgres:mysecretpassword@<DB_HOST>:5432/newsletter?schema=public"
-
-    # RabbitMQ
-    RABBITMQ_URL="amqp://<RABBITMQ_HOST>:5672"
-
-    # Frontend
-    CLIENT_URL="https://<CLIENT_HOST>"
-
-    # Gmail:
-    NODEMAILER_EMAIL=<GMAIL_EMAIL>
-    NODEMAILER_PASS=<GMAIL_PASS>
-  ```
-
-  - `.env.prod` file for production
-
-  ```bash
-    NODE_ENV="production"
-    PORT=5000
-
-    # DB
-    DATABASE_URL="postgresql://postgres:<DB_PASS>@<DB_HOST>:5432/newsletter?schema=public"
-
-    # RabbitMQ
-    RABBITMQ_URL="amqp://<RABBITMQ_HOST>:5672"
-
-    # Frontend
-    CLIENT_URL="https://<CLIENT_HOST>"
-
-    # Gmail:
-    NODEMAILER_EMAIL=<GMAIL_EMAIL>
-    NODEMAILER_PASS=<GMAIL_PASS>
-  ```
-
-4. Run the RabbitMQ Server:
-
-   ```bash
-   docker run -d --hostname my-rabbit --name some-rabbit -p 15672:15672 -p 5672:5672  rabbitmq:3-management
-   ```
-
-5. Run the Redis Server:
-
-   ```bash
-    docker run --name some-redis -d -p 6379:6379 redis
-   ```
-
-6. Run the PostgreSQL Server:
-
-   ```bash
-    docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
-   ```
-
-7. Run the Front End:
-
-   ```bash
-   cd apps/client
-
-   npm run dev # For Development purposes
-
-   npm run build # For Production purposes
-   npm run start
-   ```
-
-8. Run the Main Server:
-
-   ```bash
-    cd apps/main-server
-
-    npm run dev # For Development purposes
-
-    npm run build # For Production purposes
-    npm run start
-   ```
-
-9. Run the Email Server:
-
-   ```bash
-    cd apps/email-server
-
-    npm run dev # For Development purposes
-
-    npm run build # For Production purposes
-    npm run start
-   ```
-
-### Run with Docker
-
-Set the environment variables in the `.env` and `.env.prod` files as mentioned above.
-
-1. Build the Docker Images
-
-   ```bash
-   docker-compose build
-   ```
-
-2. Run the Docker Containers
-
-   ```bash
-   docker-compose up
-   ```
-
-3. Stop the Docker Containers
-
-   ```bash
-   docker-compose down
-   ```
-
-<!-- Demonstration -->
 
 ## Demonstration
 

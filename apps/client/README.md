@@ -1,6 +1,6 @@
 <!-- PROJECT LOGO -->
 <div align="center">
-    <img src="https://github.com/KishorBalgi/Peer-to-Peer-Video-Communication/assets/75678927/4867b00c-4dc6-4a52-ae05-6d994a875528" alt="Logo" width="200" height="200">
+    <img src="https://github.com/KishorBalgi/newsletter-platform/assets/75678927/2e44f5a9-3398-4728-804b-68966921a5d2" alt="Logo" width="200" height="200">
 
   <h3 align="center">Newsletter Client Application</h3>
 
@@ -52,28 +52,28 @@ The newsletter application is a comprehensive platform designed to streamline th
 - **Modern Frontend Stack:** The frontend is built using _Next.js_ for server-side rendering, _Tailwind CSS_ for styling, and _Shadcn/ui_ for UI components, providing a seamless user experience.
 
 **Home Page**
-<img src="" alt="Home Page">
+<img src="https://github.com/KishorBalgi/newsletter-platform/assets/75678927/1b44244b-0f0b-4c7d-8d96-728ebfafbced" alt="Home Page">
 
 **Signup Page**
-<img src="" alt="Signup Page">
+<img src="https://github.com/KishorBalgi/newsletter-platform/assets/75678927/4c6142a4-f0a7-4fea-b96d-129e461028d5" alt="Signup Page">
 
 **Login Page**
-<img src="" alt="Login Page">
+<img src="https://github.com/KishorBalgi/newsletter-platform/assets/75678927/211f67a2-c9c2-487d-86b5-0face0a04d53" alt="Login Page">
 
 **Browse Newsletters**
-<img src="" alt="Browse Newsletters Page">
+<img src="https://github.com/KishorBalgi/newsletter-platform/assets/75678927/7c7019b8-3341-415a-8521-55bd89603279" alt="Browse Newsletters Page">
 
 **Browse Articles**
-<img src="" alt="Browse Articles Page">
+<img src="https://github.com/KishorBalgi/newsletter-platform/assets/75678927/0d4aa370-8698-41f7-b1e2-40ae96c0cbf0" alt="Browse Articles Page">
 
 **Create Newsletter**
-<img src="" alt="Create Newsletter Page">
+<img src="https://github.com/KishorBalgi/newsletter-platform/assets/75678927/2654bf09-385e-4660-b6f8-5ba851a968d8" alt="Create Newsletter Page">
 
 **Create Article**
-<img src="" alt="Create Article Page">
+<img src="https://github.com/KishorBalgi/newsletter-platform/assets/75678927/25fddfa2-d936-44ac-8497-c1f50458c914" alt="Create Article Page">
 
 **Subscribe to Newsletter**
-<img src="" alt="Subscribe to Newsletter Page">
+<img src="https://github.com/KishorBalgi/newsletter-platform/assets/75678927/0737eb20-fd4c-443a-a4db-c220ede1cc4e" alt="Subscribe to Newsletter Page">
 
 #### Architecture
 

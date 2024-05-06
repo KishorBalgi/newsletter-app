@@ -1,6 +1,6 @@
 <!-- PROJECT LOGO -->
 <div align="center">
-    <img src="https://github.com/KishorBalgi/Peer-to-Peer-Video-Communication/assets/75678927/4867b00c-4dc6-4a52-ae05-6d994a875528" alt="Logo" width="200" height="200">
+    <img src="https://github.com/KishorBalgi/newsletter-platform/assets/75678927/2e44f5a9-3398-4728-804b-68966921a5d2" alt="Logo" width="200" height="200">
 
   <h3 align="center">Newsletter Email Server</h3>
 
@@ -50,30 +50,6 @@ The newsletter application is a comprehensive platform designed to streamline th
 - **Relational Database:** Data is stored in _PostgreSQL_, offering reliability, consistency, and powerful querying capabilities through _Prisma ORM_.
 - **Dockerization:** _Docker_ containers ensure easy deployment and scalability across different environments, promoting consistency and reliability.
 - **Modern Frontend Stack:** The frontend is built using _Next.js_ for server-side rendering, _Tailwind CSS_ for styling, and _Shadcn/ui_ for UI components, providing a seamless user experience.
-
-**Home Page**
-<img src="" alt="Home Page">
-
-**Signup Page**
-<img src="" alt="Signup Page">
-
-**Login Page**
-<img src="" alt="Login Page">
-
-**Browse Newsletters**
-<img src="" alt="Browse Newsletters Page">
-
-**Browse Articles**
-<img src="" alt="Browse Articles Page">
-
-**Create Newsletter**
-<img src="" alt="Create Newsletter Page">
-
-**Create Article**
-<img src="" alt="Create Article Page">
-
-**Subscribe to Newsletter**
-<img src="" alt="Subscribe to Newsletter Page">
 
 #### Architecture
 

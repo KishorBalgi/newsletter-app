@@ -32,7 +32,7 @@ class EmailServices {
       html: htmlToSend,
     });
 
-    console.log("Message sent: %s", info.messageId);
+    console.log("Message sent to %s: %s", to, info.messageId);
   };
 }
 

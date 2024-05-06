@@ -1,6 +1,8 @@
 import Navbar from "@/components/layout/navbar";
 import "./globals.css";
 import { Inter as FontSans } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "contexts/authContext";
 
 import { cn } from "@/lib/utils";
 
@@ -23,10 +25,13 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main>{children}</main>
-        </div>
+        <AuthProvider>
+          <Toaster position="bottom-right" />
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main>{children}</main>
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

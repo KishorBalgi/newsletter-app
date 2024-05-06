@@ -1,0 +1,52 @@
+FROM node:18-alpine AS base
+
+FROM base AS builder
+RUN apk add --no-cache libc6-compat
+RUN apk update
+# Set working directory
+WORKDIR /app
+RUN npm install turbo --global
+COPY . .
+ARG WORKSPACE
+
+RUN turbo prune ${WORKSPACE} --docker
+
+# Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer
+RUN apk add --no-cache libc6-compat
+RUN apk update
+WORKDIR /app
+ARG WORKSPACE
+ARG APP
+
+# First install the dependencies (as they change less often)
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/package-lock.json ./package-lock.json
+RUN npm install
+
+# Build the project
+COPY --from=builder /app/out/full/ .
+
+RUN npx turbo run build --filter=${WORKSPACE}
+
+FROM base AS runner
+WORKDIR /app
+ARG APP
+
+# Don't run production as root
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nodejs
+USER nodejs
+
+COPY --from=installer --chown=nodejs:nodejs /app/apps/${APP}/.next/standalone ./
+COPY --from=installer --chown=nodejs:nodejs /app/apps/${APP}/.next/static ./apps/${APP}/.next/static
+COPY --from=installer --chown=nodejs:nodejs /app/apps/${APP}/public ./apps/${APP}/public
+
+EXPOSE 3000
+
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+
+WORKDIR /app/apps/${APP}
+
+CMD npm run start

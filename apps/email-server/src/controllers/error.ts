@@ -1,5 +1,25 @@
 import { Request, Response, NextFunction } from "express";
+import { Prisma } from "@prisma/client";
 import AppError from "../utils/AppError";
+
+// Handle Prisma Error:
+const handlePrismaError = (err: Prisma.PrismaClientKnownRequestError) => {
+  let error: any = { ...err };
+  error.message = err.message;
+
+  if (err.code === "P2002") {
+    console.log(err);
+    const message = `${err?.meta?.target} already in use!`;
+    return new AppError(400, message);
+  }
+
+  if (err.code === "P2025") {
+    const message = "Invalid data";
+    return new AppError(400, message);
+  }
+
+  return new AppError(500, "Something went wrong!");
+};
 
 // Dev Error:
 const sendErrDev = (err: any, res: Response) => {
@@ -38,6 +58,10 @@ const globalErrorHandler = (
 
   error.statusCode = error.statusCode || 500;
   error.status = error.status || "error";
+
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    error = handlePrismaError(error);
+  }
 
   if (process.env.NODE_ENV === "development") {
     sendErrDev(error, res);

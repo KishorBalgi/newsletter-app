@@ -14,7 +14,7 @@ export class RedisService {
     });
 
     redisConn.on("error", (err) => {
-      console.log("Error in Redis connection", err);
+      console.log("Error in Redis connection");
     });
 
     return redisConn;

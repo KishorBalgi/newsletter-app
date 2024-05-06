@@ -5,7 +5,7 @@
   <h3 align="center">Newsletter Client Application</h3>
 
   <p align="center">
-    The client application for the newsletter app built using Next.js, Tailwind CSS, and Shadcn/ui
+    Newsletter application designed to demonstrate mass email notification to the subscribers
     <br />
     <a href="">View Demo</a>
     ·

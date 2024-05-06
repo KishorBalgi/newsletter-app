@@ -23,7 +23,7 @@ services:
       - 15672:15672
     environment:
       - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=RabbitMQ
+      - RABBITMQ_DEFAULT_PASS=/run/secrets/mq_password
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:

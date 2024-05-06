@@ -168,14 +168,14 @@ The project's architecture emphasizes scalability, maintainability, and performa
    Clone the repo to your local system
 
    ```git
-   git clone https://github.com/KishorBalgi/newsletter-platform newsletter-platform
+    git clone https://github.com/KishorBalgi/newsletter-platform newsletter-platform
    ```
 
 2. Install all the dependencies
 
    ```bash
-   cd newsletter-platform
-   npm install # This will install all the required dependencies for all the workspaces
+    cd newsletter-platform
+    npm install # This will install all the required dependencies for all the workspaces
    ```
 
 3. Environment Configurations:
@@ -345,22 +345,33 @@ The project's architecture emphasizes scalability, maintainability, and performa
 
 Set the environment variables in the `.env` and `.env.prod` files as mentioned above.
 
+#### Create Docker Secrets files
+
+```bash
+    cd secrets/
+    echo "mysecretpassword" | docker secret create db_password -
+    echo "mysecretpassword" | docker secret create mq_password -
+    echo "mysecretpassword" | docker secret create redis_password -
+
+    cd ..
+```
+
 1. Build the Docker Images
 
    ```bash
-   docker-compose build
+    docker-compose build
    ```
 
 2. Run the Docker Containers
 
    ```bash
-   docker-compose up
+    docker-compose up
    ```
 
 3. Stop the Docker Containers
 
    ```bash
-   docker-compose down
+    docker-compose down
    ```
 
 <!-- Demonstration -->

@@ -23,7 +23,7 @@ services:
       - 15672:15672
     environment:
       - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=/run/secrets/mq_password
+      - RABBITMQ_DEFAULT_PASS=RabbitMQ
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
@@ -85,7 +85,7 @@ services:
   client:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_NextJS
       args:
         - WORKSPACE=newsletter-client
         - APP=client
@@ -95,9 +95,7 @@ services:
     ports:
       - 3000:3000
     env_file:
-      - apps/client/.env.prod
-    volumes:
-      - frontend_data:/app
+      - apps/client/.env.local
     networks:
       - main-server-network
 
@@ -110,7 +108,6 @@ networks:
     driver: bridge
 
 volumes:
-  frontend_data:
   postgres_data:
   rabbitmq_data:
   redis_data:

@@ -1,12 +1,6 @@
 import { useNewsletter } from "hooks/useNewsletter";
 import { notFound } from "next/navigation";
 
-const article = {
-  id: 1,
-  title: "Article 1",
-  body: "Article 1 body",
-};
-
 async function getData({ params }) {
   try {
     const { getArticleById } = useNewsletter();

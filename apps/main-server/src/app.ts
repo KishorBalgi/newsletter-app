@@ -29,6 +29,15 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+// Req interceptor:
+app.use((req, res, next) => {
+  const req_url = new URL(req.url, `http://${req.headers.host}`);
+  console.log(
+    `${req.method} ${req_url.pathname} ${req.protocol}://${req.headers.host}`
+  );
+  next();
+});
+
 app.use(
   cors({
     origin: process.env.CLIENT_URL,

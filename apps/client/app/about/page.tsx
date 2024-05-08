@@ -11,15 +11,11 @@ export default function Page() {
         <h1 className="text-3xl font-bold mb-4">About Project</h1>
 
         <p className="mt-4">
-          {/* TODO */}
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis nemo
-          dolorum, eveniet quae possimus pariatur ullam totam magnam, ipsa enim
-          tempora, at quos voluptas reiciendis assumenda commodi dolor. Officia,
-          natus? <br /> <br />
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ratione
-          illum distinctio corporis reiciendis tempore assumenda modi incidunt
-          quod delectus repellat totam sunt optio laborum, dolore impedit rem
-          enim in voluptatum.
+          The newsletter application is a comprehensive platform designed to
+          streamline the creation, management, and distribution of newsletters
+          and articles. Leveraging modern technologies and best practices, this
+          project offers a robust and scalable solution for publishers and
+          subscribers alike.
           <br /> <br />
           <p>
             Designed and Developed by{" "}

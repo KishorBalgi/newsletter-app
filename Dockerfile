@@ -11,7 +11,6 @@ ARG WORKSPACE
 
 RUN turbo prune ${WORKSPACE} --docker
 
-# Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
 RUN apk add --no-cache libc6-compat
 RUN apk update
@@ -19,7 +18,6 @@ WORKDIR /app
 ARG WORKSPACE
 ARG APP
 
-# First install the dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/package-lock.json ./package-lock.json
 RUN npm install
@@ -33,7 +31,6 @@ FROM base AS runner
 WORKDIR /app
 ARG APP
 
-# Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
 USER nodejs

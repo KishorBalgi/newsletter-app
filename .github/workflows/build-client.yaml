@@ -1,4 +1,4 @@
-name: Building and Pushing Docker Image for the Frontend
+name: Frontend - Build and Push Docker Image
 run-name: Building and Pushing Docker Image for the Frontend
 
 on:

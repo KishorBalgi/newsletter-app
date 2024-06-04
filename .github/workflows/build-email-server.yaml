@@ -1,4 +1,4 @@
-name: Building and Pushing Docker Image for the Email Server
+name: Email Server - Build and Push Docker Image
 run-name: Building and Pushing Docker Image for the Email Server
 
 on:
@@ -29,7 +29,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile_NextJS
+          file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-workspace:newsletter-email-server
           build-args: |

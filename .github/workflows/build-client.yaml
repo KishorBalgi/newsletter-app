@@ -38,6 +38,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    environment: AWS_Deployment
     needs: build-and-push
     steps:
       - name: Execute Docker Commands on AWS Instance to deploy the application
@@ -51,8 +52,8 @@ jobs:
               "trap '\''echo DOCKER_STOP_FAILURE 1>&2'\'' ERR; if sudo docker ps --format '\''{{.Names}}'\'' | grep -q ${{ env.CLIENT_CONTIANER_NAME }}; then sudo docker stop ${{ env.CLIENT_CONTIANER_NAME }}; fi",
               "trap '\''echo DOCKER_RENAME_FAILURE 1>&2'\'' ERR; if sudo docker ps -a --format '\''{{.Names}}'\'' | grep -q ${{ env.CLIENT_CONTIANER_NAME }}; then sudo docker rename ${{ env.CLIENT_CONTIANER_NAME }} ${{ env.CLIENT_CONTIANER_NAME }}-${GITHUB_RUN_NUMBER}; fi",
               "trap '\''echo DOCKER_LOGIN_FAILURE 1>&2'\'' ERR; sudo docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}",
-              "trap '\''echo DOCKER_PULL_FAILURE 1>&2'\'' ERR; docker pull ${{ env.CLIENT_IMAGE_TO_DEPLOY }}",
-              "trap '\''echo DOCKER_RUN_FAILURE 1>&2'\'' ERR; docker run -d -p 80:80 --name ${{ env.CLIENT_CONTIANER_NAME }} ${{ env.CLIENT_IMAGE_TO_DEPLOY }}"
+              "trap '\''echo DOCKER_PULL_FAILURE 1>&2'\'' ERR; sudo docker pull ${{ env.CLIENT_IMAGE_TO_DEPLOY }}",
+              "trap '\''echo DOCKER_RUN_FAILURE 1>&2'\'' ERR; sudo docker run -d -p 80:80 --name ${{ env.CLIENT_CONTIANER_NAME }} ${{ env.CLIENT_IMAGE_TO_DEPLOY }}"
             ]' --query 'Command.CommandId' --output text)
 
           echo "command_id=$command_id" >> $GITHUB_ENV

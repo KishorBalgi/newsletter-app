@@ -1,12 +1,12 @@
-name: Building and Pushing Docker Image for the Frontend
-run-name: Building and Pushing Docker Image for the Frontend
+name: Building and Pushing Docker Image for the Email Server
+run-name: Building and Pushing Docker Image for the Email Server
 
 on:
   push:
     branches:
       - main
     paths:
-      - apps/client/**
+      - apps/main-server/**
   workflow_dispatch:
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
           context: .
           file: ./Dockerfile_NextJS
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-workspace:newsletter-client
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-workspace:newsletter-email-server
           build-args: |
-            WORKSPACE=newsletter-client
-            APP=client
+            WORKSPACE=newsletter-email-server
+            APP=email-server

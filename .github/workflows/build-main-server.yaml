@@ -1,12 +1,12 @@
-name: Building and Pushing Docker Image for the Frontend
-run-name: Building and Pushing Docker Image for the Frontend
+name: Building and Pushing Docker Image for the Main Server
+run-name: Building and Pushing Docker Image for the Main Server
 
 on:
   push:
     branches:
       - main
     paths:
-      - apps/client/**
+      - apps/main-server/**
   workflow_dispatch:
 
 jobs:
@@ -29,9 +29,9 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile_NextJS
+          file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-workspace:newsletter-client
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-workspace:newsletter-main-server
           build-args: |
-            WORKSPACE=newsletter-client
-            APP=client
+            WORKSPACE=newsletter-main-server
+            APP=main-server

@@ -39,20 +39,24 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build-and-push
+    env:
+      INSTANCE_ID:
+      CLIENT_CONTIANER_NAME:
+      CLIENT_IMAGE_TO_DEPLOY:
     steps:
       - name: Execute Docker Commands on AWS Instance to deploy the application
         run: |
           command_id=$(aws ssm send-command \
-            --instance-ids ${{ vars.INSTANCE_ID }} \
+            --instance-ids ${{ env.INSTANCE_ID }} \
             --document-name "AWS-RunShellScript" \
             --comment "Executing Docker operations" \
             --parameters commands='[
               "set -e",
-              "trap '\''echo DOCKER_STOP_FAILURE 1>&2'\'' ERR; if sudo docker ps --format '\''{{.Names}}'\'' | grep -q ${{ vars.CLIENT_CONTIANER_NAME }}; then sudo docker stop ${{ vars.CLIENT_CONTIANER_NAME }}; fi",
-              "trap '\''echo DOCKER_RENAME_FAILURE 1>&2'\'' ERR; if sudo docker ps -a --format '\''{{.Names}}'\'' | grep -q ${{ vars.CLIENT_CONTIANER_NAME }}; then sudo docker rename ${{ vars.CLIENT_CONTIANER_NAME }} ${{ vars.CLIENT_CONTIANER_NAME }}-${GITHUB_RUN_NUMBER}; fi",
+              "trap '\''echo DOCKER_STOP_FAILURE 1>&2'\'' ERR; if sudo docker ps --format '\''{{.Names}}'\'' | grep -q ${{ env.CLIENT_CONTIANER_NAME }}; then sudo docker stop ${{ env.CLIENT_CONTIANER_NAME }}; fi",
+              "trap '\''echo DOCKER_RENAME_FAILURE 1>&2'\'' ERR; if sudo docker ps -a --format '\''{{.Names}}'\'' | grep -q ${{ env.CLIENT_CONTIANER_NAME }}; then sudo docker rename ${{ env.CLIENT_CONTIANER_NAME }} ${{ env.CLIENT_CONTIANER_NAME }}-${GITHUB_RUN_NUMBER}; fi",
               "trap '\''echo DOCKER_LOGIN_FAILURE 1>&2'\'' ERR; sudo docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}",
-              "trap '\''echo DOCKER_PULL_FAILURE 1>&2'\'' ERR; sudo docker pull ${{ vars.CLIENT_IMAGE_TO_DEPLOY }}",
-              "trap '\''echo DOCKER_RUN_FAILURE 1>&2'\'' ERR; sudo docker run -d -p 80:80 --name ${{ vars.CLIENT_CONTIANER_NAME }} ${{ vars.CLIENT_IMAGE_TO_DEPLOY }}"
+              "trap '\''echo DOCKER_PULL_FAILURE 1>&2'\'' ERR; sudo docker pull ${{ env.CLIENT_IMAGE_TO_DEPLOY }}",
+              "trap '\''echo DOCKER_RUN_FAILURE 1>&2'\'' ERR; sudo docker run -d -p 80:80 --name ${{ env.CLIENT_CONTIANER_NAME }} ${{ env.CLIENT_IMAGE_TO_DEPLOY }}"
             ]' --query 'Command.CommandId' --output text)
 
           echo "command_id=$command_id" >> $GITHUB_ENV
@@ -60,11 +64,11 @@ jobs:
       # - name: Retrieve and Store SSM Command Results
       #   run: |
       #     aws ssm wait command-executed \
-      #       --command-id ${{ vars.command_id }} \
-      #       --instance-id ${{ vars.INSTANCE_ID }} || true
+      #       --command-id ${{ env.command_id }} \
+      #       --instance-id ${{ env.INSTANCE_ID }} || true
       #     ssm_command_output=$(aws ssm get-command-invocation \
-      #           --command-id ${{ vars.command_id }} \
-      #           --instance-id ${{ vars.INSTANCE_ID }})
+      #           --command-id ${{ env.command_id }} \
+      #           --instance-id ${{ env.INSTANCE_ID }})
 
       #     standard_error_content=$(echo "$ssm_command_output" | jq -r '.StandardErrorContent')
       #     standard_error_content=${standard_error_content//$'\n'/' '}

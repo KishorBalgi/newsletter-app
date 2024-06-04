@@ -1,5 +1,5 @@
-name: Build & Deploy
-run-name: Building Docker Images and Deploying
+name: Building and Pushing Docker Image for the Frontend
+run-name: Building and Pushing Docker Image for the Frontend
 
 on:
   push:
@@ -32,6 +32,6 @@ jobs:
           file: ./Dockerfile_NextJS
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-workspace:newsletter-client
-          build-args: |
-            - WORKSPACE=newsletter-client
-            - APP=client
+        build-args: |
+          - WORKSPACE=newsletter-client
+          - APP=client

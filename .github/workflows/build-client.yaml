@@ -35,3 +35,40 @@ jobs:
           build-args: |
             WORKSPACE=newsletter-client
             APP=client
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    steps:
+      - name: Execute Docker Commands on AWS Instance to deploy the application
+        run: |
+          command_id=$(aws ssm send-command \
+            --instance-ids ${{ env.INSTANCE_ID }} \
+            --document-name "AWS-RunShellScript" \
+            --comment "Executing Docker operations" \
+            --parameters commands='[
+              "set -e",
+              "trap '\''echo DOCKER_STOP_FAILURE 1>&2'\'' ERR; if sudo docker ps --format '\''{{.Names}}'\'' | grep -q ${{ env.CONTIANER_NAME }}; then sudo docker stop ${{ env.CONTIANER_NAME }}; fi",
+              "trap '\''echo DOCKER_RENAME_FAILURE 1>&2'\'' ERR; if sudo docker ps -a --format '\''{{.Names}}'\'' | grep -q ${{ env.CONTIANER_NAME }}; then sudo docker rename ${{ env.CONTIANER_NAME }} ${{ env.CONTIANER_NAME }}-${GITHUB_RUN_NUMBER}; fi",
+              "trap '\''echo DOCKER_LOGIN_FAILURE 1>&2'\'' ERR; sudo docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}",
+              "trap '\''echo DOCKER_PULL_FAILURE 1>&2'\'' ERR; docker pull ${{ env.IMAGE_TO_DEPLOY }}",
+              "trap '\''echo DOCKER_RUN_FAILURE 1>&2'\'' ERR; docker run -d -p 80:80 --name ${{ env.CONTIANER_NAME }} ${{ env.IMAGE_TO_DEPLOY }}"
+            ]' --query 'Command.CommandId' --output text)
+
+          echo "command_id=$command_id" >> $GITHUB_ENV
+
+      # - name: Retrieve and Store SSM Command Results
+      #   run: |
+      #     aws ssm wait command-executed \
+      #       --command-id ${{ env.command_id }} \
+      #       --instance-id ${{ env.INSTANCE_ID }} || true
+      #     ssm_command_output=$(aws ssm get-command-invocation \
+      #           --command-id ${{ env.command_id }} \
+      #           --instance-id ${{ env.INSTANCE_ID }})
+
+      #     standard_error_content=$(echo "$ssm_command_output" | jq -r '.StandardErrorContent')
+      #     standard_error_content=${standard_error_content//$'\n'/' '}
+      #     status=$(echo "$ssm_command_output" | jq -r '.Status')
+
+      #     echo "status=$status" >> $GITHUB_ENV
+      #     echo "standard_error_content=$standard_error_content" >> $GITHUB_ENV

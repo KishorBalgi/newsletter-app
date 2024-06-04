@@ -32,6 +32,6 @@ jobs:
           file: ./Dockerfile_NextJS
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-workspace:newsletter-client
-        build-args:
-          - WORKSPACE=newsletter-client
-          - APP=client
+          build-args:
+            - WORKSPACE=newsletter-client
+            - APP=client

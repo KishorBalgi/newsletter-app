@@ -3,9 +3,10 @@ run-name: Building Docker Images and Deploying
 
 on:
   push:
-    branches: main
-  paths:
-    - apps/main-server/**
+    branches:
+      - main
+    paths:
+      - apps/main-server/**
 
 jobs:
   build-and-push:

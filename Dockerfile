@@ -5,7 +5,8 @@ RUN apk add --no-cache libc6-compat
 RUN apk update
 # Set working directory
 WORKDIR /app
-RUN npm install turbo --global
+RUN npm install turbo@1.13.4 --global
+RUN turbo telemetry disable
 COPY . .
 ARG WORKSPACE
 

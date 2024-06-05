@@ -43,17 +43,17 @@ jobs:
       - name: Execute Docker Commands on AWS Instance to deploy the application
         run: |
           command_id=$(aws ssm send-command \
-            --instance-ids ${{ secrets.INSTANCE_ID }} \
-            --document-name "AWS-RunShellScript" \
-            --comment "Executing Docker operations" \
-            --parameters commands='[
-              "set -e",
-              "trap '\''echo DOCKER_STOP_FAILURE 1>&2'\'' ERR; if sudo docker ps --format '\''{{.Names}}'\'' | grep -q ${{ secrets.CLIENT_CONTIANER_NAME }}; then sudo docker stop ${{ secrets.CLIENT_CONTIANER_NAME }}; fi",
-              "trap '\''echo DOCKER_RENAME_FAILURE 1>&2'\'' ERR; if sudo docker ps -a --format '\''{{.Names}}'\'' | grep -q ${{ secrets.CLIENT_CONTIANER_NAME }}; then sudo docker rename ${{ secrets.CLIENT_CONTIANER_NAME }} ${{ secrets.CLIENT_CONTIANER_NAME }}-${GITHUB_RUN_NUMBER}; fi",
-              "trap '\''echo DOCKER_LOGIN_FAILURE 1>&2'\'' ERR; sudo docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}",
-              "trap '\''echo DOCKER_PULL_FAILURE 1>&2'\'' ERR; sudo docker pull ${{ secrets.CLIENT_IMAGE_TO_DEPLOY }}",
-              "trap '\''echo DOCKER_RUN_FAILURE 1>&2'\'' ERR; sudo docker run -d -p 80:80 --name ${{ secrets.CLIENT_CONTIANER_NAME }} ${{ secrets.CLIENT_IMAGE_TO_DEPLOY }}"
-            ]' --query 'Command.CommandId' --output text)
+          --instance-ids "${{ secrets.INSTANCE_ID }}" \
+          --document-name "AWS-RunShellScript" \
+          --comment "Executing Docker operations" \
+          --parameters commands='[
+            "set -e",
+            "trap '\''echo DOCKER_STOP_FAILURE 1>&2'\'' ERR; if sudo docker ps --format '\''{{.Names}}'\'' | grep -q ${{ secrets.CLIENT_CONTIANER_NAME }}; then sudo docker stop ${{ secrets.CLIENT_CONTIANER_NAME }}; fi",
+            "trap '\''echo DOCKER_RENAME_FAILURE 1>&2'\'' ERR; if sudo docker ps -a --format '\''{{.Names}}'\'' | grep -q ${{ secrets.CLIENT_CONTIANER_NAME }}; then sudo docker rename ${{ secrets.CLIENT_CONTIANER_NAME }} ${{ secrets.CLIENT_CONTIANER_NAME }}-${GITHUB_RUN_NUMBER}; fi",
+            "trap '\''echo DOCKER_LOGIN_FAILURE 1>&2'\'' ERR; sudo docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}",
+            "trap '\''echo DOCKER_PULL_FAILURE 1>&2'\'' ERR; sudo docker pull ${{ secrets.CLIENT_IMAGE_TO_DEPLOY }}",
+            "trap '\''echo DOCKER_RUN_FAILURE 1>&2'\'' ERR; sudo docker run -d -p 80:80 --name ${{ secrets.CLIENT_CONTIANER_NAME }} ${{ secrets.CLIENT_IMAGE_TO_DEPLOY }}"
+          ]' --query 'Command.CommandId' --output text)
 
           echo "command_id=$command_id" >> $GITHUB_ENV
 

@@ -40,6 +40,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-push
     steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_SECRET }}
+          aws-region: ap-south-1
+
       - name: Execute Docker Commands on AWS Instance to deploy the application
         run: |
           command_id=$(aws ssm send-command \
